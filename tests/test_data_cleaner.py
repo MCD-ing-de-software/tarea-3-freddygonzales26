@@ -82,9 +82,9 @@ class TestDataCleaner(unittest.TestCase):
         - Verificar que el DataFrame resultante no tiene valores faltantes en esas columnas (usar self.assertEqual para comparar .isna().sum() con 0 - comparación simple de enteros, unittest es suficiente)
         - Verificar que el DataFrame resultante tiene menos filas que el original (usar self.assertLess con len() - comparación simple de enteros, unittest es suficiente)
         """
-        df = make_sample_df
+        df = make_sample_df()
         cleaner = DataCleaner()
-        resultado = self.cleaner.drop_invalid_rows(df, ["name", "age"])
+        resultado = cleaner.drop_invalid_rows(df, ["name", "age"])
         self.assertEqual(resultado["name"].isna().sum(),0)
         self.assertEqual(resultado["age"].isna().sum(),0)
         self.assertLess(len(resultado), len(df))
@@ -99,6 +99,10 @@ class TestDataCleaner(unittest.TestCase):
         - Llamar a drop_invalid_rows con una columna que no existe (ej: "does_not_exist")
         - Verificar que se lanza un KeyError (usar self.assertRaises)
         """
+        df = make_sample_df()
+        cleaner = DataCleaner()
+        with self.assertRaises(KeyError):
+            cleaner.drop_invalid_rows(df, ["does_not_exist"])
 
     def test_trim_strings_strips_whitespace_without_changing_other_columns(self):
         """Test que verifica que el método trim_strings elimina correctamente los espacios

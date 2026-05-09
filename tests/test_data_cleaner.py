@@ -157,6 +157,7 @@ class TestDataCleaner(unittest.TestCase):
             "city": ["Lima", "Cuzco", "Arequipa", "Cajamarca"]
         })
         df = pd.concat([df_inicial, df_2], ignore_index=True)
+        cleaner = DataCleaner()
         df_sinna = df.dropna(subset=["age"])
         resultado = cleaner.remove_outliers_iqr(df_sinna, "age", factor=1.5)
         self.assertIn(25, resultado["age"].values)
